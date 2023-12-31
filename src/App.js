@@ -2,19 +2,26 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import SignupPage from './pages/Signup'
 import LoginPage from './pages/Login'
+import HomePage from './pages/Home'
+import ServiceListingsPage from './pages/ServiceListings'
+import ShoppingCartPage from './pages/ShoppingCart'
+import SupportPage from './pages/Support'
+import { CartProvider } from './util/CartContext'
 
 function App() {
   return (
-    <div className="min-h-full h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <Router>
-          <Routes>
-            <Route path="/" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-          </Routes>
-        </Router>
-      </div>
-    </div>
+    <CartProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/services" element={<ServiceListingsPage />} />
+          <Route path="/shopping-cart" element={<ShoppingCartPage />} />
+          <Route path="/support" element={<SupportPage />} />
+        </Routes>
+      </Router>
+    </CartProvider>
   )
 }
 
