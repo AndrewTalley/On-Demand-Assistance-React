@@ -1,13 +1,6 @@
 import React, { useContext } from 'react'
 import { CartContext } from '../util/CartContext'
-import {
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Box,
-  CardActions
-} from '@mui/material'
+import { Card, CardContent, Typography, Button, Box } from '@mui/material'
 import {
   getUserService,
   deleteService,
@@ -56,9 +49,15 @@ export default function ServiceCard({ service, inCart }) {
         }}
       >
         <CardContent>
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-            {service_name}
-          </Typography>
+          <Box display="flex" justifyContent="center">
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ fontWeight: 'bold' }}
+            >
+              {service_name}
+            </Typography>
+          </Box>
           <Box border={1} borderColor="divider" borderRadius={1} p={2} mb={2}>
             <Typography
               variant="body2"
@@ -74,23 +73,38 @@ export default function ServiceCard({ service, inCart }) {
               </Typography>
             </Typography>
           </Box>
-          <Typography variant="h6" color="text.primary">
-            ${service_price}
-          </Typography>
-          <Box sx={{ pt: 2 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={addServiceToCart}
-            >
-              Select Service
-            </Button>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ fontWeight: 'bold' }}
+          >
+            <Typography variant="h6" color="text.primary">
+              ${service_price}
+            </Typography>
+            <Box sx={{ pt: 2 }}>
+              {inCart ? (
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  onClick={removeServiceFromCart}
+                >
+                  Delete from Cart
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="success"
+                  size="small"
+                  onClick={addServiceToCart}
+                >
+                  Add to Cart
+                </Button>
+              )}
+            </Box>
           </Box>
         </CardContent>
-        <CardActions>
-          {inCart && <Button onClick={removeServiceFromCart}>X</Button>}
-        </CardActions>
       </Card>
     </>
   )

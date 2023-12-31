@@ -21,7 +21,7 @@ export default function ServiceListings() {
 
   return (
     <Box sx={{ mx: 4, my: 12 }}>
-      <Grid container spacing={4}>
+      <Grid container spacing={3}>
         {services.map((service) => (
           <Grid key={service.service_id} item xs={12} sm={6} md={3}>
             <ServiceCard service={service} />

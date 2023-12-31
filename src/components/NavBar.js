@@ -2,19 +2,38 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/honeydew-align-left.png'
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Box } from '@mui/material'
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Box,
+  Drawer
+} from '@mui/material'
 import AccountCircle from '@mui/icons-material/AccountCircle'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Link } from 'react-router-dom' // Assuming you are using React Router
 import NavBarButton from './NavBarButton'
 import { logoutUser } from '../util/api'
+import ShoppingCart from './ShoppingCart'
 
 export default function NavBar() {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [cartOpen, setCartOpen] = useState(false)
   const open = Boolean(anchorEl)
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
+  }
+
+  const handleCartOpen = () => {
+    setCartOpen(true)
+  }
+
+  const handleCartClose = () => {
+    setCartOpen(false)
   }
 
   const handleClose = () => {
@@ -34,7 +53,6 @@ export default function NavBar() {
 
   const navButtons = [
     { to: '/services', label: 'Service Listings' },
-    { to: '/shopping-cart', label: 'Shopping Cart' },
     { to: '/support', label: 'Support and Help Center' }
   ]
 
@@ -59,6 +77,30 @@ export default function NavBar() {
               </NavBarButton>
             ))}
           </Box>
+          <IconButton
+            color="inherit"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleCartOpen}
+          >
+            <ShoppingCartIcon />
+          </IconButton>
+          <Drawer
+            anchor="right"
+            open={cartOpen} // change this to control when the drawer is open
+            onClose={handleCartClose}
+            PaperProps={{
+              sx: {
+                width: 500, // adjust this to control the width of the drawer
+                backgroundColor: 'whitesmoke',
+                borderRadius: 0
+              }
+            }}
+          >
+            <ShoppingCart />
+          </Drawer>
+
           <IconButton
             color="inherit"
             aria-label="account of current user"
