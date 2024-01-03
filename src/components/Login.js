@@ -14,6 +14,7 @@ fields.forEach((field) => (fieldsState[field.id] = ''))
 export default function Login() {
   const navigate = useNavigate()
   const [loginState, setLoginState] = useState(fieldsState)
+  const [sid, setSid] = useState(null)
 
   const handleChange = (e) => {
     setLoginState({
@@ -34,6 +35,9 @@ export default function Login() {
         loginState['email'],
         loginState['password']
       )
+      console.log('Login Response: ', response)
+      setSid(response.data.sid)
+      sessionStorage.setItem('sid', response.data.sid)
       console.log('Login Successful: ', response)
       navigate('/home')
     } catch (error) {

@@ -1,5 +1,5 @@
 // NavBar.js
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../images/honeydew-align-left.png'
 import {
@@ -17,10 +17,13 @@ import { Link } from 'react-router-dom' // Assuming you are using React Router
 import NavBarButton from './NavBarButton'
 import { logoutUser } from '../util/api'
 import ShoppingCart from './ShoppingCart'
+import { CartContext } from '../context/CartContext'
+import { deleteAllUserOrders, getUserID } from '../util/api'
 
 export default function NavBar() {
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null)
+  const [cart, setCart] = useContext(CartContext)
   const [cartOpen, setCartOpen] = useState(false)
   const open = Boolean(anchorEl)
 
@@ -42,8 +45,13 @@ export default function NavBar() {
 
   const handleLogout = async () => {
     try {
+      const user_id = await getUserID()
+      if (cart.length > 0) {
+        await deleteAllUserOrders(user_id)
+      }
       const response = await logoutUser()
       console.log('Logout Successful: ', response)
+      setCart([])
       navigate('/')
     } catch (error) {
       console.error('Logout Failed: ', error)
@@ -53,7 +61,8 @@ export default function NavBar() {
 
   const navButtons = [
     { to: '/services', label: 'Service Listings' },
-    { to: '/support', label: 'Support and Help Center' }
+    { to: '/support', label: 'Support and Help Center' },
+    { to: '/providerPortal', label: 'Provider Portal' }
   ]
 
   return (

@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import ServiceCard from './ServiceCard'
 import { Grid, Box } from '@mui/material'
-import { getServices } from '../util/api'
+import { ServicesContext } from '../context/ServicesContext'
+// import { TransitionContext } from '../context/TransitionContext'
 
 export default function ServiceListings() {
-  const [services, setServices] = useState([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const services = await getServices()
-        setServices(services)
-      } catch (error) {
-        console.error('Error fetching services: ', error)
-      }
-    }
-
-    fetchData()
-  }, [])
-
+  const { servicesNotInCart, removeServiceFromNotInCart } =
+    useContext(ServicesContext)
   return (
     <Box sx={{ mx: 4, my: 12 }}>
       <Grid container spacing={3}>
-        {services.map((service) => (
+        {servicesNotInCart.map((service) => (
           <Grid key={service.service_id} item xs={12} sm={6} md={3}>
-            <ServiceCard service={service} />
+            <ServiceCard
+              service={service}
+              removeServiceFromNotInCart={() =>
+                removeServiceFromNotInCart(service)
+              }
+            />
           </Grid>
         ))}
       </Grid>

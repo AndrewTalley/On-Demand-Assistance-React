@@ -6,22 +6,29 @@ import HomePage from './pages/Home'
 import ServiceListingsPage from './pages/ServiceListings'
 import ShoppingCartPage from './pages/ShoppingCart'
 import SupportPage from './pages/Support'
-import { CartProvider } from './util/CartContext'
-
+import OrderHistoryPage from './pages/OrderHistory'
+import { CartProvider } from './context/CartContext'
+import { ServicesProvider } from './context/ServicesContext'
+import { OrderProvider } from './context/OrdersContext'
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/services" element={<ServiceListingsPage />} />
-          <Route path="/shopping-cart" element={<ShoppingCartPage />} />
-          <Route path="/support" element={<SupportPage />} />
-        </Routes>
-      </Router>
-    </CartProvider>
+    <OrderProvider>
+      <CartProvider>
+        <ServicesProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/home" element={<HomePage />} />
+              <Route path="/services" element={<ServiceListingsPage />} />
+              <Route path="/shopping-cart" element={<ShoppingCartPage />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/order-history" element={<OrderHistoryPage />} />
+            </Routes>
+          </Router>
+        </ServicesProvider>
+      </CartProvider>
+    </OrderProvider>
   )
 }
 

@@ -1,28 +1,35 @@
 import React, { useContext } from 'react'
-import { CartContext } from '../util/CartContext'
+import { CartContext } from '../context/CartContext'
 import { Card, CardContent, Typography, Button, Box } from '@mui/material'
 import {
-  getUserService,
-  deleteService,
-  selectService,
+  getOrdersById,
+  deleteOrderById,
+  createdOrder,
   getUserID
 } from '../util/api'
 import { formatDate } from '../util/helper'
+import { ServicesContext } from '../context/ServicesContext'
 
 const OK_STATUS = 200
 
-export default function ServiceCard({ service, inCart }) {
+export default function ServiceCard({
+  service,
+  inCart,
+  removeServiceFromNotInCart
+}) {
   const { service_id, service_name, service_description, service_price } =
     service
   const [cart, setCart] = useContext(CartContext)
+  const { resetServicesNotInCart } = useContext(ServicesContext)
 
   const removeServiceFromCart = async () => {
     try {
-      const userServiceID = await getUserService(service_id, await getUserID())
-      const response = await deleteService(userServiceID)
+      const orderId = await getOrdersById(service_id, await getUserID())
+      const response = await deleteOrderById(orderId)
       if (response.status !== OK_STATUS) {
         throw new Error('Network response was not ok')
       }
+      resetServicesNotInCart()
       setCart((prevCart) => prevCart.filter((s) => s.service_id !== service_id))
     } catch (error) {
       console.error('Error:', error)
@@ -31,7 +38,8 @@ export default function ServiceCard({ service, inCart }) {
 
   const addServiceToCart = async () => {
     try {
-      await selectService(service_id)
+      await createdOrder(service_id)
+      removeServiceFromNotInCart()
       setCart([...cart, service])
     } catch (error) {
       console.error('Failed to select service: ', error)

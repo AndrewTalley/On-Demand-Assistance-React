@@ -1,9 +1,12 @@
 import axios from 'axios'
 
-// User Authentication Functions
-// ------------------------------
+// Base URL for the API
+const BASE_URL = 'http://localhost:3000/api/v1'
 
-// 1.) Registers a new user
+// User API Endpoints
+// ---------------------------------
+
+// Registers a new user
 export const registerUser = async (
   firstName,
   lastName,
@@ -12,95 +15,105 @@ export const registerUser = async (
   role
 ) => {
   const response = await axios.post(
-    'http://localhost:3000/api/v1/users/register',
-    {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      role: role
-    },
+    `${BASE_URL}/users/register`,
+    { first_name: firstName, last_name: lastName, email, password, role },
     { withCredentials: true }
   )
   return response
 }
 
-// 2.) Authenticates a user
+// Authenticates a user
 export const loginUser = async (email, password) => {
   const response = await axios.post(
-    'http://localhost:3000/api/v1/users/login',
-    {
-      email: email,
-      password: password
-    },
+    `${BASE_URL}/users/login`,
+    { email, password },
     { withCredentials: true }
   )
   return response
 }
 
-// 3.) Logs out the currently authenticated user
+// Logs out the currently authenticated user
 export const logoutUser = async () => {
   const response = await axios.post(
-    'http://localhost:3000/api/v1/users/logout',
+    `${BASE_URL}/users/logout`,
     {},
     { withCredentials: true }
   )
   return response
 }
 
-// 4.) Fetches the user ID of the currently authenticated user
+// Fetches the user ID of the currently authenticated user
 export const getUserID = async () => {
-  const response = await axios.get(
-    `http://localhost:3000/api/v1/transactions/get-user-id`,
-    { withCredentials: true }
-  )
+  const response = await axios.get(`${BASE_URL}/users/sessionid`, {
+    withCredentials: true
+  })
   return response.data.user_id
 }
 
-// Service Related Functions
-// --------------------------
+// Service API Endpoints
+// ----------------------
 
-// 1.) Fetches all services
+// Fetches all services
 export const getServices = async () => {
-  const response = await axios.get('http://localhost:3000/api/v1/services')
+  const response = await axios.get(`${BASE_URL}/services`)
   return response.data.services
 }
 
-// 2.) Fetches a specific service for a user
-export const getUserService = async (service_id, user_id) => {
+// Order API Endpoints
+// ---------------------------
+
+// Fetches all the orders for a user by the user's ID
+export const getAllUserOrders = async (userId) => {
+  const response = await axios.get(`${BASE_URL}/orders/${userId}`, {
+    withCredentials: true
+  })
+  return response.data
+}
+
+// Fetches a specific Order for a user
+export const getOrdersById = async (service_id, user_id, sid) => {
   const response = await axios.get(
-    `http://localhost:3000/api/v1/transactions/get-user-service/${service_id}/${user_id}`,
+    `${BASE_URL}/orders/find-user-order/${service_id}/${user_id}/${sid}`,
     { withCredentials: true }
   )
   return response.data.data.id
 }
 
-// 3.) Selects a specific service for a user
-export const selectService = async (service_id) => {
+// Creates an Order of a user
+export const createdOrder = async (service_id) => {
   const response = await axios.post(
-    `http://localhost:3000/api/v1/transactions/select-service`,
+    `${BASE_URL}/orders`,
     { service_id },
     { withCredentials: true }
   )
   return response
 }
 
-// User Service Related Functions
-// -------------------------------
+// Deletes a specific Order for a user
+export const deleteOrderById = async (orderId) => {
+  const response = await axios.delete(`${BASE_URL}/orders/${orderId}`, {
+    withCredentials: true
+  })
+  return response
+}
 
-// 1.) Deletes a specific service for a user
-export const deleteService = async (userServiceID) => {
+// Deletes all Orders for a specific user
+export const deleteAllUserOrders = async (userId) => {
   const response = await axios.delete(
-    `http://localhost:3000/api/v1/transactions/delete-service/${userServiceID}`,
+    `${BASE_URL}/orders/${userId}/all-orders`,
     { withCredentials: true }
   )
   return response
 }
 
-// 2.) Deletes all services for a specific user
-export const deleteAllUserServices = async (user_id) => {
-  const response = await axios.delete(
-    `http://localhost:3000/api/v1/transactions/delete-all-services/${user_id}`,
+// Transaction API Endpoints
+// --------------------------
+
+// Creates a Stripe checkout session
+export const createStripeCheckoutSession = async () => {
+  const response = await axios.post(
+    `${BASE_URL}/transactions/create-checkout-session`,
+    {},
     { withCredentials: true }
   )
   return response

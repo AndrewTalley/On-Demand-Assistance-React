@@ -1,20 +1,46 @@
 import React, { useContext } from 'react'
-import { CartContext } from '../util/CartContext'
+import { CartContext } from '../context/CartContext'
 import ServiceCard from './ServiceCard'
 import { Button, Box, Grid, Typography } from '@mui/material'
-import { deleteAllUserServices, getUserID } from '../util/api'
+import {
+  deleteAllUserOrders,
+  getUserID,
+  createStripeCheckoutSession
+} from '../util/api'
+import { loadStripe } from '@stripe/stripe-js'
+import { ServicesContext } from '../context/ServicesContext'
 
-export default function ShoppingCartPage() {
+export default function ShoppingCart() {
   const [cart, setCart] = useContext(CartContext)
+  const { resetServicesNotInCart } = useContext(ServicesContext)
 
   const removeAllServicesFromCart = async () => {
     try {
       const user_id = await getUserID()
-      const response = await deleteAllUserServices(user_id)
+      const response = await deleteAllUserOrders(user_id)
       if (response.status !== 200) {
         throw new Error('Network response was not ok')
       }
+      resetServicesNotInCart()
       setCart([])
+    } catch (error) {
+      console.error('Error:', error)
+    }
+  }
+
+  const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY)
+  const handleCheckout = async () => {
+    try {
+      const response = await createStripeCheckoutSession()
+      console.log(response.data.sessionId)
+      const session = response.data
+      const stripe = await stripePromise
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.sessionId
+      })
+      if (result.error) {
+        alert(result.error.message)
+      }
     } catch (error) {
       console.error('Error:', error)
     }
@@ -58,7 +84,12 @@ export default function ShoppingCartPage() {
               alignContent={'baseline'}
               sx={{ my: 1, gap: 2 }}
             >
-              <Button variant="contained" color="success" size="small">
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={handleCheckout}
+              >
                 Checkout
               </Button>
               <Button
