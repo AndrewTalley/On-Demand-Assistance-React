@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { signupFields } from '../constants/formFields'
 import FormAction from './FormAction'
 import Input from './Input'
@@ -12,6 +13,7 @@ fields.forEach((field) => (fieldsState[field.id] = ''))
 export default function Signup() {
   const [signupState, setSignupState] = useState(fieldsState)
   const [role, setRole] = useState('')
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setSignupState({
@@ -29,6 +31,7 @@ export default function Signup() {
       signupState['password'],
       role
     )
+    navigate('/')
   }
 
   return (
@@ -54,7 +57,7 @@ export default function Signup() {
             value={role}
             onChange={handleChange}
           >
-            <MenuItem value="admin">Admin</MenuItem>
+            <MenuItem value="provider">Provider</MenuItem>
             <MenuItem value="user">User</MenuItem>
           </Select>
           <FormAction handleSubmit={handleSubmit} text={'Sign Up'} />

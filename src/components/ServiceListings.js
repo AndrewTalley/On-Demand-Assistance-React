@@ -9,7 +9,7 @@ export default function ServiceListings() {
     useContext(ServicesContext)
   return (
     <Box sx={{ mx: 4, my: 12 }}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} direction="row">
         {servicesNotInCart.map((service) => (
           <Grid key={service.service_id} item xs={12} sm={6} md={3}>
             <ServiceCard

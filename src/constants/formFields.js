@@ -5,7 +5,7 @@ const loginFields = [
     id: 'email',
     name: 'email',
     type: 'text',
-    autoComplete: 'email',
+    inputProps: { autoComplete: 'email' },
     isRequired: true,
     placeholder: 'Email Address'
   },
@@ -15,7 +15,7 @@ const loginFields = [
     id: 'password',
     name: 'password',
     type: 'password',
-    autoComplete: 'current-password',
+    inputProps: { autoComplete: 'current-password' },
     isRequired: true,
     placeholder: 'Password'
   }
@@ -28,7 +28,7 @@ const signupFields = [
     id: 'first-name',
     name: 'first-name',
     type: 'text',
-    autoComplete: 'first-name',
+    inputProps: { autoComplete: 'first-name' },
     isRequired: true,
     placeholder: 'First Name'
   },
@@ -38,7 +38,7 @@ const signupFields = [
     id: 'last-name',
     name: 'last-name',
     type: 'text',
-    autoComplete: 'last-name',
+    inputProps: { autoComplete: 'last-name' },
     isRequired: true,
     placeholder: 'Last Name'
   },
@@ -48,7 +48,7 @@ const signupFields = [
     id: 'email',
     name: 'email',
     type: 'text',
-    autoComplete: 'email',
+    inputProps: { autoComplete: 'email' },
     isRequired: true,
     placeholder: 'Email Address'
   },
@@ -58,7 +58,7 @@ const signupFields = [
     id: 'password',
     name: 'password',
     type: 'password',
-    autoComplete: 'current-password',
+    inputProps: { autoComplete: 'current-password' },
     isRequired: true,
     placeholder: 'Password'
   },
@@ -68,7 +68,7 @@ const signupFields = [
     id: 'confirm-password',
     name: 'confirm-password',
     type: 'password',
-    autoComplete: 'current-password',
+    inputProps: { autoComplete: 'current-password' },
     isRequired: true,
     placeholder: 'Confirm Password'
   }

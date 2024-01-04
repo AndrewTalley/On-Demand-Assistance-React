@@ -61,13 +61,19 @@ export default function ShoppingCart() {
             sx={{
               position: 'sticky',
               bottom: 0,
-              backgroundColor: '#f5f5f5', // a lighter shade of gray
               width: '100%',
               borderTop: '2px solid #ddd', // add a border at the top
               boxShadow: '0 -1px 3px rgba(0, 0, 0, 0.1)' // add a shadow
             }}
           >
-            <Box sx={{ my: 3 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                pt: '10px',
+                gap: '30px'
+              }}
+            >
               <Typography variant="h6" color="text.secondary">
                 Total: $
                 {cart
@@ -78,12 +84,7 @@ export default function ShoppingCart() {
                   )
                   .toFixed(2)}
               </Typography>
-            </Box>
-            <Box
-              display="flex"
-              alignContent={'baseline'}
-              sx={{ my: 1, gap: 2 }}
-            >
+
               <Button
                 variant="contained"
                 color="success"

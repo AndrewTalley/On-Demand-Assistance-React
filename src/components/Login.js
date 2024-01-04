@@ -14,7 +14,7 @@ fields.forEach((field) => (fieldsState[field.id] = ''))
 export default function Login() {
   const navigate = useNavigate()
   const [loginState, setLoginState] = useState(fieldsState)
-  const [sid, setSid] = useState(null)
+  const [, setSid] = useState(null)
 
   const handleChange = (e) => {
     setLoginState({
@@ -38,11 +38,18 @@ export default function Login() {
       console.log('Login Response: ', response)
       setSid(response.data.sid)
       sessionStorage.setItem('sid', response.data.sid)
+      // Set the JWT token in local storage
+      setToken(response.data.token)
+      console.log('JWT Token: ', localStorage.getItem('token'))
       console.log('Login Successful: ', response)
       navigate('/home')
     } catch (error) {
       console.error('Login Failed: ', error)
     }
+  }
+
+  const setToken = (token) => {
+    localStorage.setItem('token', token)
   }
 
   return (
